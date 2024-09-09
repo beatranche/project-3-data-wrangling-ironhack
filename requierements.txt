@@ -1,0 +1,4 @@
+python 3.11
+ipykernel 6.28.0   
+datacommons 1.4.3
+request
