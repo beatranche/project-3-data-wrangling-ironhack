@@ -1,4 +1,4 @@
-python 3.11
-ipykernel 6.28.0   
-datacommons 1.4.3
-request 2.32.3
+ 
+datacommons = 1.4.3
+request = 2.32.3
+seaborn = 0.13.2
