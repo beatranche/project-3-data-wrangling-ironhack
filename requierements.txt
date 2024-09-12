@@ -1,4 +1,6 @@
- datacommons = 1.4.3
-request = 2.32.3
-seaborn = 0.13.2
-
+beautifulsoup4==4.12.3
+datacommons==1.4.3
+ipykernel==6.29.5
+pandas==2.2.2
+requests==2.32.3
+seaborn==0.13.2
