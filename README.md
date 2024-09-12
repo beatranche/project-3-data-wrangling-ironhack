@@ -1,8 +1,18 @@
 # Análisis de Datos de Consumo Eléctrico, Pérdida y Emisiones de CO2
 
+## Enlace a la Presentación
+[Enlace a la presentación](https://www.canva.com/design/DAGQdwXQbfc/59S0rQ8GhDk3MPOiZj19AQ/edit?utm_content=DAGQdwXQbfc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)  
+
+## Equipo
+
+**Beatriz Tranche**  
+
+**Carlos Vergara** 
+
 ## Objetivo del Proyecto
 
-Este proyecto tiene como objetivo analizar y visualizar datos de consumo de electricidad, pérdida de electricidad y emisiones de CO2 para países en Europa y Asia. El propósito principal es entender cómo estos factores impactan en la sostenibilidad y explorar cómo la inteligencia artificial puede contribuir a mejorar la sostenibilidad y reducir el impacto ambiental.
+Este proyecto tiene como objetivo analizar y visualizar datos de consumo de electricidad, pérdida de electricidad y emisiones de CO2 para países en Europa y Asia. El propósito principal es entender cómo estos factores impactan en la sostenibilidad y explorar cómo la inteligencia artificial puede contribuir a mejorar la sostenibilidad y reducir el impacto ambiental. 
+
 
 ## Metodología
 
@@ -49,6 +59,11 @@ Los archivos CSV deben ser proporcionados como parte del conjunto de datos del p
 **¿Qué hago si encuentro un error al ejecutar el código?**
 
 Verifica que todas las dependencias estén correctamente instaladas y que los archivos CSV estén en la ubicación correcta. Si el problema persiste, revisa los mensajes de error y consulta la documentación de las bibliotecas utilizadas.
+
+## Agradecimientos
+
+Queremos expresar nuestro sincero agradecimiento a Ironhack por brindarnos la oportunidad de llevar a cabo este proyecto. La experiencia ha sido increíblemente enriquecedora y nos ha permitido aplicar nuestros conocimientos en un contexto real, trabajando con datos y herramientas avanzadas. Agradecemos el apoyo y los recursos proporcionados, que han sido fundamentales para el desarrollo de nuestra investigación y el aprendizaje a lo largo de este proceso.
+
 
 
 
