@@ -3,6 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib as mpl
+from IPython.display import display  # Import display for Jupyter notebooks
+
 
 sns.set_theme(style="ticks")
 
@@ -204,7 +206,9 @@ def create_separate_co2_graphs(df_europe, df_asia):
     # Create CO2 emissions graph for Asia
     create_co2_graph(df_asia, 'Asia')
 
-# New function to encapsulate the entire process
+import pandas as pd
+
+# Recolect all the functions in one main function
 def main():
     columns_mapping = {
         'placeName': 'Country',
@@ -230,6 +234,9 @@ def main():
     # Rename columns
     df_merged = rename_columns(df_merged, columns_mapping)
 
+    # Replace 'Macedonia [FYROM]' with 'Macedonia'
+    df_merged['Country'] = df_merged['Country'].replace('Macedonia [FYROM]', 'Macedonia')
+
     # Convert date columns to integer
     df_merged = convert_date_to_integer(df_merged, columns_to_int)
 
@@ -247,3 +254,12 @@ def main():
 
     # Create separate CO2 emissions graphs for Europe and Asia
     create_separate_co2_graphs(df_european_countries, df_asian_countries)
+
+    # Reset index to ensure it's continuous
+    df_merged.reset_index(drop=True, inplace=True)
+
+    # Display the cleaned and formatted DataFrame
+    pd.set_option('display.max_rows', None)
+    pd.set_option('display.max_columns', None)
+    print('Table information:')
+    display(df_merged)
