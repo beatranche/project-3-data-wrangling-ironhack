@@ -1,18 +1,11 @@
 # Análisis de Datos de Consumo Eléctrico, Pérdida y Emisiones de CO2
 
-## Enlace a la Presentación
-[Enlace a la presentación](https://www.canva.com/design/DAGQdwXQbfc/FZfUyXNfzyIKenz6O78XBw/view?utm_content=DAGQdwXQbfc&utm_campaign=designshare&utm_medium=link&utm_source=editor)  
-
-## Equipo
-
-**Beatriz Tranche**  
-
-**Carlos Vergara** 
-
 ## Objetivo del Proyecto
 
 Este proyecto tiene como objetivo analizar y visualizar datos de consumo de electricidad, pérdida de electricidad y emisiones de CO2 para países en Europa y Asia. El propósito principal es entender cómo estos factores impactan en la sostenibilidad y explorar cómo la inteligencia artificial puede contribuir a mejorar la sostenibilidad y reducir el impacto ambiental. 
 
+## Enlace a la Presentación
+[Enlace a la presentación](https://www.canva.com/design/DAGQdwXQbfc/FZfUyXNfzyIKenz6O78XBw/view?utm_content=DAGQdwXQbfc&utm_campaign=designshare&utm_medium=link&utm_source=editor)  
 
 ## Metodología
 
