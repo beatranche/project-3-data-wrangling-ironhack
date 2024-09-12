@@ -3,11 +3,10 @@ import pandas as pd  # Data manipulation with DataFrames
 import matplotlib.pyplot as plt  # Plotting and visualizations
 import seaborn as sns  # Statistical data visualization
 import matplotlib as mpl  # Additional plot customization
-from IPython.display import display  # Display DataFrames in Jupyter
-
-
 # Set the Seaborn theme to "ticks", which applies a clean style with ticks on the axes for better readability of the plots.
 sns.set_theme(style="ticks")
+import warnings
+    
 
 # Function to read dataframes from a CSV file
 def get_dataframes_from_csv(file_path):
@@ -207,15 +206,125 @@ def create_separate_co2_graphs(df_europe, df_asia):
     # Create CO2 emissions graph for Asia
     create_co2_graph(df_asia, 'Asia')
 
-import pandas as pd
+def generar_markdown_inicio():
+ 
+    markdown = """
+# Análisis de Datos de Consumo Eléctrico, Pérdida y Emisiones de CO2
+
+## Introducción
+
+Este proyecto tiene como objetivo analizar los datos de consumo de electricidad, pérdida de electricidad y emisiones de CO2 en países de Europa y Asia. La pregunta central que guía este análisis es:
+
+**¿Cómo puede la inteligencia artificial mejorar la sostenibilidad o reducir el impacto ambiental?**
+
+Para responder a esta pregunta, realizamos un análisis detallado de los siguientes aspectos:
+
+1. Consumo de electricidad.
+2. Pérdida de electricidad.
+3. Emisiones de CO2 generadas por la producción de electricidad.
+
+## Metodología
+
+Las visualizaciones incluyen gráficos de barras para observar:
+
+1. **Consumo y pérdida de electricidad** en gigavatios-hora (GWh) para cada continente.
+2. **Emisiones de CO2** en millones de toneladas por país.
+
+Los gráficos son generados usando las librerías **Seaborn** y **Matplotlib** para obtener visualizaciones claras y concisas que permitan interpretar los datos de forma efectiva.
+
+## Aplicación de la IA a la Sostenibilidad
+
+A partir de este análisis, exploraremos cómo la inteligencia artificial puede ser aplicada para:
+
+- Optimizar el uso de electricidad.
+- Reducir las pérdidas en la red eléctrica.
+- Minimizar las emisiones de CO2 mediante tecnologías predictivas y soluciones basadas en datos.
+
+## Conclusión
+
+Este estudio proporciona una visión general de los patrones de consumo energético y su impacto ambiental en Europa y Asia. La inteligencia artificial tiene el potencial de mejorar la sostenibilidad mediante la optimización de recursos y la reducción del impacto ambiental.
+
+### Realizado por Beatriz Tranche y Carlos Vergara
+________________________________________________________________________________________________________________________________________________
+    """
+    return markdown.strip()
+
+def markdown_EDA():
+    
+    markdown = '''
+    
+## Exploratory Data Analysis
+
+### Gráficos de Consumo Eléctrico y Pérdida
+
+A continuación, se presentan gráficos de barras que muestran el consumo de electricidad y la pérdida para los 10 principales países de Europa y Asia. Estos gráficos permiten comparar el uso de electricidad entre países y analizar las pérdidas en la red eléctrica.
+    
+'''
+    
+    return markdown.strip()
+
+def markdown_data_cleaning():
+    markdown = '''
+## Estructura del Código
+
+El análisis está dividido en varias funciones clave:
+
+1. **Lectura y procesamiento de datos**: Lectura de archivos CSV que contienen los datos de países europeos y asiáticos.
+2. **Fusión y limpieza de datos**: Combinación de los conjuntos de datos de Europa y Asia, y eliminación de valores nulos.
+3. **Renombrar columnas**: Estandarización de los nombres de columnas para facilitar su interpretación.
+4. **Filtrado por continente**: Selección de países de Europa y Asia para realizar comparaciones regionales.
+5. **Creación de gráficos**: Visualización de:
+- Consumo y pérdida de electricidad.
+- Emisiones de CO2 por generación eléctrica.
+
+## Análisis de Datos
+
+El análisis incluye:
+
+- **Consumo de electricidad**: Comparación de los países con mayor consumo de electricidad en Europa y Asia.
+- **Pérdida de electricidad**: Análisis de la pérdida de electricidad como proporción del consumo.
+- **Emisiones de CO2**: Identificación de los países con mayores emisiones de CO2 relacionadas con la producción de electricidad.
+        '''
+    return markdown.strip()
+
+def markdown_table_info():
+    
+    markdown = '''
+## Visualización de la Tabla de Datos
+
+### Descripción
+
+La tabla muestra datos de consumo de electricidad, pérdida y emisiones de CO2 para países de Europa y Asia. Los datos están organizados con las siguientes columnas:
+
+- **Country**: Nombre del país.
+- **Date_of_Consumption_and_Loss_Electricity**: Año de registro.
+- **Electricity_Consumption**: Consumo de electricidad (GWh).
+- **Loss_electricity**: Pérdida de electricidad (GWh).
+- **Year_of_Emissions_of_CarbonDioxide_Electricity**: Año de emisiones de CO2.
+- **Emissions_CarbonDioxide_ElectricityGeneration**: Emisiones de CO2 (toneladas).
+
+### Notas
+
+Los datos han sido limpiados y estandarizados para asegurar la calidad y consistencia en el análisis.
+    '''
+    return markdown.strip()
 
 # Recolect all the functions in one main function
 def main():
+    
     '''
     This function processes and analyzes data related to electricity consumption, loss, and CO2 emissions 
     for countries in Europe and Asia. The function reads data from CSV files, merges them, cleans the data, 
     renames columns, handles missing values, and generates visualizations.
     '''
+    from IPython.display import Markdown, display
+    
+    warnings.filterwarnings('ignore')
+    
+    
+    
+   
+    display(Markdown(generar_markdown_inicio()))
     
     # A dictionary to map the original column names from the dataset to more descriptive and consistent names
     columns_mapping = {
@@ -283,6 +392,7 @@ def main():
     df_european_countries = get_continents(df_merged, 'Europe')
     df_asian_countries = get_continents(df_merged, 'Asia')
 
+    
     # Sort results by electric consumption
     '''
     Both the European and Asian datasets are sorted by electricity consumption. This allows for ranking and 
@@ -291,6 +401,9 @@ def main():
     df_european_countries = sort_by_electric_consumption(df_european_countries)
     df_asian_countries = sort_by_electric_consumption(df_asian_countries)
 
+    # Create a markdown to explain the analysis
+    display(Markdown(markdown_EDA()))
+    
     # Create graphs for electricity consumption
     '''
     Bar charts are created to visualize the top 10 electricity-consuming countries in Europe and Asia. These 
@@ -306,13 +419,15 @@ def main():
     '''
     create_separate_co2_graphs(df_european_countries, df_asian_countries)
 
+
     # Reset index to ensure it's continuous
     '''
     After merging the datasets, the index may not be continuous. This step resets the index to avoid any confusion 
     or issues in further analysis and visualization.
     '''
     df_merged.reset_index(drop=True, inplace=True)
-
+    display(Markdown(markdown_data_cleaning()))
+    
     # Display the cleaned and formatted DataFrame
     '''
     The full DataFrame with all rows and columns is displayed to provide a complete overview of the cleaned data. 
@@ -322,3 +437,5 @@ def main():
     pd.set_option('display.max_columns', None)
     print('Table information:')
     display(df_merged)
+    
+    display(Markdown(markdown_table_info()))
