@@ -1,7 +1,7 @@
 # Análisis de Datos de Consumo Eléctrico, Pérdida y Emisiones de CO2
 
 ## Enlace a la Presentación
-[Enlace a la presentación](https://www.canva.com/design/DAGQdwXQbfc/59S0rQ8GhDk3MPOiZj19AQ/edit?utm_content=DAGQdwXQbfc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)  
+[Enlace a la presentación](https://www.canva.com/design/DAGQdwXQbfc/FZfUyXNfzyIKenz6O78XBw/view?utm_content=DAGQdwXQbfc&utm_campaign=designshare&utm_medium=link&utm_source=editor)  
 
 ## Equipo
 
