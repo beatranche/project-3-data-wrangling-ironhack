@@ -2,150 +2,100 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
- 
+import matplotlib as mpl
 
-# Funtion to read dataframes fron a CSV file
+sns.set_theme(style="ticks")
+
+# Function to read dataframes from a CSV file
 def get_dataframes_from_csv(file_path):
-    """
-    Reads a CSV file and returns its content as a pandas DataFrame.
-
-    Parameters
-    ----------
-    file_path : str
-        The path to the CSV file to be read.
-
-    Returns
-    -------
-    pandas.DataFrame
-        The content of the CSV file as a pandas DataFrame.
-    """
-    # Read the CSV file into a DataFrame.
-    # The 'pd.read_csv' function will automatically detect the delimiter and the data types of the columns.
-    df_downloaded = pd.read_csv(file_path)
+    '''
+    Reads a CSV file from the given file path and returns a DataFrame.
     
-    # Return the DataFrame
+    Parameters:
+    file_path (str): The path to the CSV file to be read.
+    
+    Returns:
+    DataFrame: The DataFrame containing data from the CSV file.
+    '''
+    df_downloaded = pd.read_csv(file_path)
     return df_downloaded
 
-
-
-# Merge the two DataFrames  
+# Function to merge two DataFrames
 def merge_dataframes(df_europe, df_asia):
-    """
-    Merge two DataFrames together.
-
-    Parameters
-    ----------
-    df_europe : pandas.DataFrame
-        The first DataFrame to be merged.
-    df_asia : pandas.DataFrame
-        The second DataFrame to be merged.
-
-    Returns
-    -------
-    pandas.DataFrame
-        The merged DataFrame.
-    """
-    # Concatenate the two DataFrames along the 0th axis (rows)
+    '''
+    Merges two DataFrames by concatenating them along the row axis.
+    
+    Parameters:
+    df_europe (DataFrame): The DataFrame containing data for European countries.
+    df_asia (DataFrame): The DataFrame containing data for Asian countries.
+    
+    Returns:
+    DataFrame: The merged DataFrame containing data from both European and Asian countries.
+    '''
     merged_df = pd.concat([df_europe, df_asia], axis=0)
-
-    # Return the merged DataFrame
     return merged_df
 
-# Drop the rows with missing values
+# Function to drop rows with missing values
 def drop_missing_values(df):
-    """
-    Drop the rows with missing values from the given DataFrame.
-
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        The DataFrame to be cleaned.
-
-    Returns
-    -------
-    pandas.DataFrame
-        The cleaned DataFrame with no missing values.
-    """
-    # Drop the rows with missing values
+    '''
+    Removes rows with any missing values from the DataFrame.
+    
+    Parameters:
+    df (DataFrame): The DataFrame from which missing values will be removed.
+    
+    Returns:
+    DataFrame: The DataFrame with missing values removed.
+    '''
     df_clean = df.dropna()
-
     return df_clean
 
-# Function to rename columns names
+# Function to rename columns
 def rename_columns(df, columns_mapping):
-    """
-    Rename the columns of the given DataFrame based on the given mapping.
-
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        The DataFrame to be renamed.
-    columns_mapping : dict
-        A dictionary with the old column names as keys and the new column names as values.
-
-    Returns
-    -------
-    pandas.DataFrame
-        The DataFrame with the renamed columns.
-    """
-    # Rename the columns based on the given mapping
+    '''
+    Renames columns in the DataFrame based on the provided mapping and filters columns.
+    
+    Parameters:
+    df (DataFrame): The DataFrame with columns to be renamed.
+    columns_mapping (dict): A dictionary mapping old column names to new column names.
+    
+    Returns:
+    DataFrame: The DataFrame with renamed and filtered columns.
+    '''
     df = df.rename(columns=columns_mapping)
-
-    # Filter the columns to only include the ones we are interested in
     df = df.filter(items=['Country', 'Date_of_Consumption_and_Loss_Electricity', 
                          'Electricity_Consumption', 'Loss_electricity', 
                          'Year_of_Emissions_of_CarbonDioxide_Electricity', 
                          'Emissions_CarbonDioxide_ElectricityGeneration'])
-
-    # Return the DataFrame with the renamed columns
     return df
 
 # Function to convert date columns to integer 
-def convert_date_to_integer(df, column_name):
-    """
-    Convert the given column of the given DataFrame to integer type.
-
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        The DataFrame containing the column to be converted.
-    column_name : str
-        The name of the column to be converted.
-
-    Returns
-    -------
-    pandas.DataFrame
-        The DataFrame with the converted column.
-    """
-    # Convert the given column to integer type
-    df[column_name] = df[column_name].astype('Int64')
-
-    # Return the DataFrame with the converted column
+def convert_date_to_integer(df, column_names):
+    '''
+    Converts specified date columns in the DataFrame to integer type.
+    
+    Parameters:
+    df (DataFrame): The DataFrame with date columns to be converted.
+    column_names (list): A list of column names to be converted to integer.
+    
+    Returns:
+    DataFrame: The DataFrame with date columns converted to integers.
+    '''
+    for column_name in column_names:
+        df[column_name] = df[column_name].astype('Int64')
     return df
 
-# Function to get continents from countries
+# Function to filter data by continent
 def get_continents(df, continent):
-    """
-    Get the continents from the given DataFrame.
-
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        The DataFrame containing the countries.
-
-    Returns
-    -------
-    pandas.DataFrame
-        A filtered DataFrame with the countries of the given continent.
-
-    Notes
-    -----
-    The function filters the given DataFrame by the given continent.
-    The continent can be either 'Europe' or 'Asia'.
-    If the continent is not one of the above, the function returns None.
-    """
-
-    # European countries
+    '''
+    Filters the DataFrame to include only rows for the specified continent.
+    
+    Parameters:
+    df (DataFrame): The DataFrame to be filtered.
+    continent (str): The continent to filter by ('Europe' or 'Asia').
+    
+    Returns:
+    DataFrame: The filtered DataFrame containing data for the specified continent.
+    '''
     eu_countries = {
         'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech Republic',
         'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary',
@@ -154,7 +104,6 @@ def get_continents(df, continent):
         'Spain', 'Sweden'
     }
 
-    # Asian countries
     asian_countries = {
         'Armenia', 'Azerbaijan', 'Georgia', 'Kazakhstan', 'Cyprus', 'Turkey', 'Russia',
         'Saudi Arabia', 'Iran', 'Iraq', 'Syria', 'Lebanon', 'Jordan', 'Israel', 'Palestine',
@@ -164,96 +113,137 @@ def get_continents(df, continent):
     }
 
     if continent == 'Europe':
-        # Filter European countries
         return df[df['Country'].isin(eu_countries)]
     elif continent == 'Asia':
-        # Filter Asian countries
         return df[df['Country'].isin(asian_countries)]
     else:
         return None
 
-# Function to short columns by electric consumption
+# Function to sort DataFrame by electricity consumption
 def sort_by_electric_consumption(df):
-    """
-    Sort the given DataFrame by the 'Electricity_Consumption' column in descending order.
+    '''
+    Sorts the DataFrame by electricity consumption in descending order.
+    
+    Parameters:
+    df (DataFrame): The DataFrame to be sorted.
+    
+    Returns:
+    DataFrame: The sorted DataFrame with the highest electricity consumption first.
+    '''
+    return df.sort_values(by='Electricity_Consumption', ascending=False)
 
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        The DataFrame to be sorted.
-
-    Returns
-    -------
-    pandas.DataFrame
-        The sorted DataFrame.
-    """
-    # Sort the DataFrame by the 'Electricity_Consumption' column in descending order
-    df = df.sort_values(by='Electricity_Consumption', ascending=False)
-
-    # Return the sorted DataFrame
-    return df
-
-
-
-# Function to create a grafic
-def create_graph(data):
-    # Convert to DataFrame
-    df = pd.DataFrame(data)
-
-    # Melt the DataFrame to plot in a grouped bar chart
+# Function to create graphs for electricity consumption and loss
+def create_graph(df, continent_name):
+    '''
+    Creates a bar plot for electricity consumption and loss for the specified continent.
+    
+    Parameters:
+    df (DataFrame): The DataFrame containing data to be plotted.
+    continent_name (str): The name of the continent (e.g., 'Europe' or 'Asia').
+    
+    Returns:
+    None: Displays the bar plot.
+    '''
+    # Adjust scaling based on continent
+    if continent_name == 'Asia':
+        df['Electricity_Consumption'] = df['Electricity_Consumption'] / 1e12  # Convert to trillions (1 trillion = 1,000 billion)
+        df['Loss_electricity'] = df['Loss_electricity'] / 1e12  # Convert to trillions
+        y_label = 'Gigawatt-hours (In Trillions)'
+    elif continent_name == 'Europe':
+        df['Electricity_Consumption'] = df['Electricity_Consumption'] / 1e9  # Convert to billions
+        df['Loss_electricity'] = df['Loss_electricity'] / 1e9  # Convert to billions
+        y_label = 'Gigawatt-hours (In Billions)'
+    else:
+        raise ValueError("Continent name must be 'Europe' or 'Asia'")
+    
     df_melted = df.melt(id_vars='Country', 
-                        value_vars=['Electricity_Consumption', 'Loss_electricity', 'Emissions_CarbonDioxide_ElectricityGeneration'],
+                        value_vars=['Electricity_Consumption', 'Loss_electricity'],
                         var_name='Metric', value_name='Value')
 
-    # Set up the plot
-    plt.figure(figsize=(10, 6))
-    sns.barplot(x='Country', y='Value', hue='Metric', data=df_melted)
-
-    # Add labels and title
-    plt.title('Electricity Consumption, Loss, and CO2 Emissions by Country')
-    plt.ylabel('Value')
-    plt.xticks(rotation=45)
-
-    # Display the plot
+    plt.figure(figsize=(14, 7))
+    sns.barplot(x='Country', y='Value', hue='Metric', data=df_melted, palette='coolwarm')
+    plt.xticks(rotation=45, ha='right')
+    plt.title(f'Electricity Consumption and Loss in GWh - {continent_name}')
+    plt.xlabel('Country')
+    plt.ylabel(y_label)
+    plt.legend(title='Metric')
     plt.tight_layout()
     plt.show()
 
 
-
-
-def main():
+# Function to create CO2 emissions graphs# Function to create CO2 emissions graphs
+def create_co2_graph(df, continent_name):
+    """
+    Create a bar plot for CO2 emissions from electricity generation for a specific continent.
+    The emissions values are divided by 1e6 to convert them from tons to millions of tons.
+    """
+    # Convert emissions values from tons to millions of tons
+    df['Emissions_CarbonDioxide_ElectricityGeneration'] = df['Emissions_CarbonDioxide_ElectricityGeneration'] / 1e6
     
+    # Filter to only include the top 10 countries with the highest emissions
+    df_top_10 = df.nlargest(10, 'Emissions_CarbonDioxide_ElectricityGeneration')
+    
+    plt.figure(figsize=(14, 7))
+    sns.barplot(x='Country', y='Emissions_CarbonDioxide_ElectricityGeneration', data=df_top_10, palette='viridis')
+    plt.xticks(rotation=45, ha='right')
+    plt.title(f'CO2 Emissions from Electricity Generation - {continent_name}')
+    plt.xlabel('Country')
+    plt.ylabel('Emissions (In Millions of Tons per Year)')
+    plt.tight_layout()
+    plt.show()
+
+
+# Function to create and save separate CO2 emissions graphs for Europe and Asia
+def create_separate_co2_graphs(df_europe, df_asia):
+    """
+    Create separate CO2 emissions bar plots for Europe and Asia.
+    """
+    # Create CO2 emissions graph for Europe
+    create_co2_graph(df_europe, 'Europe')
+
+    # Create CO2 emissions graph for Asia
+    create_co2_graph(df_asia, 'Asia')
+
+# New function to encapsulate the entire process
+def main():
     columns_mapping = {
         'placeName': 'Country',
         'Date:Annual_Consumption_Electricity': 'Date_of_Consumption_and_Loss_Electricity',
         'Value:Annual_Consumption_Electricity': 'Electricity_Consumption',
-        'Date:Annual_Loss_Electricity': 'Date_of_Loss_Electricity',  # Updated name
-        'Value:Annual_Loss_Electricity': 'Loss_electricity', # 
+        'Date:Annual_Loss_Electricity': 'Date_of_Loss_Electricity',
+        'Value:Annual_Loss_Electricity': 'Loss_electricity',
         'Date:Annual_Emissions_CarbonDioxide_ElectricityGeneration': 'Year_of_Emissions_of_CarbonDioxide_Electricity',
         'Value:Annual_Emissions_CarbonDioxide_ElectricityGeneration': 'Emissions_CarbonDioxide_ElectricityGeneration'
     }
-    
     columns_to_int = ['Date_of_Consumption_and_Loss_Electricity', 'Year_of_Emissions_of_CarbonDioxide_Electricity']
-    
+
+    # Load data from CSV files
     df_europe = get_dataframes_from_csv('Europe_Country.csv')
     df_asia = get_dataframes_from_csv('Asia_Country.csv')
+
+    # Merge the data
     df_merged = merge_dataframes(df_europe, df_asia)
+
+    # Drop missing values
     df_merged = drop_missing_values(df_merged)
+
+    # Rename columns
     df_merged = rename_columns(df_merged, columns_mapping)
+
+    # Convert date columns to integer
     df_merged = convert_date_to_integer(df_merged, columns_to_int)
 
-    
+    # Get data for each continent
     df_european_countries = get_continents(df_merged, 'Europe')
     df_asian_countries = get_continents(df_merged, 'Asia')
-    
-    # Short results by electric consumption
+
+    # Sort results by electric consumption
     df_european_countries = sort_by_electric_consumption(df_european_countries)
     df_asian_countries = sort_by_electric_consumption(df_asian_countries)
-    
-    # Create graphs with the first 10  countries
-    create_graph(df_european_countries.head(10))
-    create_graph(df_asian_countries.head(10))
-    
-    
 
-    
+    # Create graphs for electricity consumption
+    create_graph(df_european_countries.head(10), 'Europe')
+    create_graph(df_asian_countries.head(10), 'Asia')
+
+    # Create separate CO2 emissions graphs for Europe and Asia
+    create_separate_co2_graphs(df_european_countries, df_asian_countries)
