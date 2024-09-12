@@ -1,11 +1,12 @@
-import requests
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import matplotlib as mpl
-from IPython.display import display  # Import display for Jupyter notebooks
+import requests  # HTTP requests for APIs
+import pandas as pd  # Data manipulation with DataFrames
+import matplotlib.pyplot as plt  # Plotting and visualizations
+import seaborn as sns  # Statistical data visualization
+import matplotlib as mpl  # Additional plot customization
+from IPython.display import display  # Display DataFrames in Jupyter
 
 
+# Set the Seaborn theme to "ticks", which applies a clean style with ticks on the axes for better readability of the plots.
 sns.set_theme(style="ticks")
 
 # Function to read dataframes from a CSV file
@@ -210,6 +211,13 @@ import pandas as pd
 
 # Recolect all the functions in one main function
 def main():
+    '''
+    This function processes and analyzes data related to electricity consumption, loss, and CO2 emissions 
+    for countries in Europe and Asia. The function reads data from CSV files, merges them, cleans the data, 
+    renames columns, handles missing values, and generates visualizations.
+    '''
+    
+    # A dictionary to map the original column names from the dataset to more descriptive and consistent names
     columns_mapping = {
         'placeName': 'Country',
         'Date:Annual_Consumption_Electricity': 'Date_of_Consumption_and_Loss_Electricity',
@@ -219,46 +227,97 @@ def main():
         'Date:Annual_Emissions_CarbonDioxide_ElectricityGeneration': 'Year_of_Emissions_of_CarbonDioxide_Electricity',
         'Value:Annual_Emissions_CarbonDioxide_ElectricityGeneration': 'Emissions_CarbonDioxide_ElectricityGeneration'
     }
+
+    # A list of columns that contain dates, which will be converted to integers representing years
     columns_to_int = ['Date_of_Consumption_and_Loss_Electricity', 'Year_of_Emissions_of_CarbonDioxide_Electricity']
 
     # Load data from CSV files
+    '''
+    The function reads two CSV files, one for Europe and another for Asia, containing data on electricity consumption, 
+    loss, and CO2 emissions. The data is loaded into pandas DataFrames for further processing.
+    '''
     df_europe = get_dataframes_from_csv('Europe_Country.csv')
     df_asia = get_dataframes_from_csv('Asia_Country.csv')
 
     # Merge the data
+    '''
+    After loading, the data from Europe and Asia is merged into a single DataFrame. This allows for easier 
+    comparison and analysis between the two regions.
+    '''
     df_merged = merge_dataframes(df_europe, df_asia)
 
     # Drop missing values
+    '''
+    To ensure the quality of the analysis, rows with missing values are dropped from the merged DataFrame.
+    This step helps to avoid errors or inconsistencies during data analysis.
+    '''
     df_merged = drop_missing_values(df_merged)
 
     # Rename columns
+    '''
+    The columns in the DataFrame are renamed based on the `columns_mapping` dictionary for clarity and consistency, 
+    making the dataset easier to understand and work with.
+    '''
     df_merged = rename_columns(df_merged, columns_mapping)
 
     # Replace 'Macedonia [FYROM]' with 'Macedonia'
+    '''
+    This step cleans up a specific country name, replacing "Macedonia [FYROM]" with "Macedonia" for uniformity 
+    in the country names.
+    '''
     df_merged['Country'] = df_merged['Country'].replace('Macedonia [FYROM]', 'Macedonia')
 
     # Convert date columns to integer
+    '''
+    The columns that represent dates (years) are converted from float or string to integer format to ensure 
+    consistency and make them easier to handle during analysis or visualization.
+    '''
     df_merged = convert_date_to_integer(df_merged, columns_to_int)
 
     # Get data for each continent
+    '''
+    The merged dataset is split back into separate DataFrames for Europe and Asia, making it possible to analyze 
+    and visualize data by continent. This helps to compare electricity consumption, loss, and CO2 emissions 
+    between Europe and Asia.
+    '''
     df_european_countries = get_continents(df_merged, 'Europe')
     df_asian_countries = get_continents(df_merged, 'Asia')
 
     # Sort results by electric consumption
+    '''
+    Both the European and Asian datasets are sorted by electricity consumption. This allows for ranking and 
+    further analysis, such as identifying the top electricity-consuming countries.
+    '''
     df_european_countries = sort_by_electric_consumption(df_european_countries)
     df_asian_countries = sort_by_electric_consumption(df_asian_countries)
 
     # Create graphs for electricity consumption
+    '''
+    Bar charts are created to visualize the top 10 electricity-consuming countries in Europe and Asia. These 
+    visualizations help in comparing the countries within each continent.
+    '''
     create_graph(df_european_countries.head(10), 'Europe')
     create_graph(df_asian_countries.head(10), 'Asia')
 
     # Create separate CO2 emissions graphs for Europe and Asia
+    '''
+    Separate graphs are generated for CO2 emissions related to electricity generation in Europe and Asia. 
+    This step provides insights into the environmental impact of electricity consumption in both regions.
+    '''
     create_separate_co2_graphs(df_european_countries, df_asian_countries)
 
     # Reset index to ensure it's continuous
+    '''
+    After merging the datasets, the index may not be continuous. This step resets the index to avoid any confusion 
+    or issues in further analysis and visualization.
+    '''
     df_merged.reset_index(drop=True, inplace=True)
 
     # Display the cleaned and formatted DataFrame
+    '''
+    The full DataFrame with all rows and columns is displayed to provide a complete overview of the cleaned data. 
+    This ensures that the data is correct and formatted properly before further analysis or export.
+    '''
     pd.set_option('display.max_rows', None)
     pd.set_option('display.max_columns', None)
     print('Table information:')
