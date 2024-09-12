@@ -24,7 +24,8 @@ Las visualizaciones se generan utilizando las bibliotecas **Seaborn** y **Matplo
 
 ## Requisitos
 
-Para ejecutar el proyecto, asegúrate de tener instaladas las bibliotecas especificadas en requirements.txt
+- Tener el main.ipynb, functions.py, Asia_Country.csv y el Europe_Country.csv descargados en la misma carpeta.
+- Para ejecutar el proyecto, asegúrate de tener instaladas las bibliotecas especificadas en requirements.txt
 
 ## Uso
 
